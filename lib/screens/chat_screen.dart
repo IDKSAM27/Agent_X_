@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../services/chat_service.dart';
+import '../widgets/chat_bubble.dart';
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key});
@@ -12,6 +13,7 @@ class _ChatScreenState extends State<ChatScreen> {
   final TextEditingController _controller = TextEditingController();
   final List<Map<String, String>> _messages = [];
   bool _isTyping = false;
+  String _botTypingMessage = '';
 
   void _sendMessage() async {
     final userMessage = _controller.text.trim();
@@ -19,8 +21,8 @@ class _ChatScreenState extends State<ChatScreen> {
 
     setState(() {
       _messages.add({"role": "user", "content": userMessage});
-      _isTyping = true;
       _controller.clear();
+      _isTyping = true;
     });
 
     final botResponse = await ChatService.getChatResponse(userMessage);
@@ -31,71 +33,37 @@ class _ChatScreenState extends State<ChatScreen> {
     });
   }
 
-  Widget _buildMessage(Map<String, String> message) {
-    final isUser = message['role'] == 'user';
-    return Align(
-      alignment: isUser ? Alignment.centerRight : Alignment.centerLeft,
-      child: Container(
-        margin: const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
-        padding: const EdgeInsets.all(12),
-        constraints: const BoxConstraints(maxWidth: 300),
-        decoration: BoxDecoration(
-          color: isUser ? Colors.deepPurple.shade100 : Colors.grey.shade200,
-          borderRadius: BorderRadius.circular(16),
-        ),
-        child: Text(
-          message['content']!,
-          style: TextStyle(
-            fontSize: 16,
-            color: isUser ? Colors.black : Colors.grey.shade800,
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildTypingBubble() {
-    return Align(
-      alignment: Alignment.centerLeft,
-      child: Container(
-        margin: const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
-        padding: const EdgeInsets.all(12),
-        decoration: BoxDecoration(
-          color: Colors.grey.shade200,
-          borderRadius: BorderRadius.circular(16),
-        ),
-        child: const DotAnimation(),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
-    final allMessages = [..._messages];
-    if (_isTyping) {
-      allMessages.add({"role": "assistant", "content": "typing..."});
-    }
-
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Agent X Chatbot'),
-      ),
+      appBar: AppBar(title: const Text('Agent X Chatbot')),
       body: Column(
         children: [
           Expanded(
             child: ListView.builder(
               reverse: false,
               padding: const EdgeInsets.symmetric(vertical: 12),
-              itemCount: allMessages.length,
+              itemCount: _messages.length,
               itemBuilder: (context, index) {
-                final msg = allMessages[index];
-                if (msg['content'] == "typing...") {
-                  return _buildTypingBubble();
-                }
-                return _buildMessage(msg);
+                final msg = _messages[index];
+                return ChatBubble(
+                  message: msg['content']!,
+                  isUser: msg['role'] == 'user',
+                );
               },
             ),
           ),
+          if (_isTyping)
+            const Padding(
+              padding: EdgeInsets.only(left: 12, bottom: 12),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: ChatBubble(
+                  message: "typing...",
+                  isUser: false,
+                ),
+              ),
+            ),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Row(
@@ -124,46 +92,5 @@ class _ChatScreenState extends State<ChatScreen> {
         ],
       ),
     );
-  }
-}
-
-// WhatsApp-style typing animation (three dots)
-class DotAnimation extends StatefulWidget {
-  const DotAnimation({super.key});
-
-  @override
-  State<DotAnimation> createState() => _DotAnimationState();
-}
-
-class _DotAnimationState extends State<DotAnimation>
-    with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
-  late Animation<int> _dotAnimation;
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = AnimationController(
-      duration: const Duration(milliseconds: 1000),
-      vsync: this,
-    )..repeat();
-    _dotAnimation = StepTween(begin: 1, end: 3).animate(_controller);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return AnimatedBuilder(
-      animation: _dotAnimation,
-      builder: (context, child) {
-        final dots = '.' * _dotAnimation.value;
-        return Text(dots, style: const TextStyle(fontSize: 20));
-      },
-    );
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
   }
 }
