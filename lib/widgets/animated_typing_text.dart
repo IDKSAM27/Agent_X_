@@ -10,7 +10,7 @@ class AnimatedTypingText extends StatefulWidget {
     super.key,
     required this.text,
     this.style,
-    this.duration = const Duration(milliseconds: 40),
+    this.duration = const Duration(milliseconds: 15),
   });
 
   @override
