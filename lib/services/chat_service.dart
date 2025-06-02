@@ -17,7 +17,7 @@ class ChatService {
           'X-Title': 'AgentXAssistant',
         },
         body: jsonEncode({
-          "model": "mistralai/mistral-7b-instruct",
+          "model": "google/gemma-3n-e4b-it:free",
           "messages": [
             {"role": "user", "content": message}
           ]
