@@ -9,10 +9,10 @@ import 'screens/home_screen.dart'; // Home screen
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // ✅ Load environment variables before anything else
+  // Load environment variables before anything else
   await dotenv.load();
 
-  // ✅ Initialize Firebase
+  // Initialize Firebase
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
