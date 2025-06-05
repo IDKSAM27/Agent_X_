@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'screens/chat_screen.dart';
 import 'screens/clock_screen.dart';
+import 'screens/calendar_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -67,7 +68,14 @@ class HomeScreen extends StatelessWidget {
                 ),
 
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const CalendarScreen(),
+                      ),
+                    );
+                  },
                   style: ElevatedButton.styleFrom(
                     minimumSize: const Size(140, 60),
                     shape: RoundedRectangleBorder(
