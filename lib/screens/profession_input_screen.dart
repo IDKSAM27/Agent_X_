@@ -1,4 +1,3 @@
-// lib/screens/profession_input_screen.dart
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -21,6 +20,7 @@ class ProfessionInputScreen extends StatelessWidget {
       }, SetOptions(merge: true));
     }
 
+    // ✅ Instead of going to ChatScreen directly, go to HomeScreen
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (context) => const HomeScreen()),
