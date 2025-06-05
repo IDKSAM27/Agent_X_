@@ -1,5 +1,6 @@
- import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'screens/chat_screen.dart';
+import 'screens/clock_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -16,16 +17,24 @@ class HomeScreen extends StatelessWidget {
               'Welcome to Agent-X! You are logged in.',
               style: TextStyle(fontSize: 18),
             ),
+
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const ChatScreen(profession: 'YourProfession')),
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        const ChatScreen(profession: 'YourProfession'),
+                  ),
                 );
               },
               child: const Text("Open Chatbot"),
             ),
+
+            ElevatedButton(onPressed: () {}, child: const Text("Clock")),
+
+            ElevatedButton(onPressed: () {}, child: const Text("Calender")),
           ],
         ),
       ),
