@@ -45,13 +45,9 @@ class _CalendarScreenState extends State<CalendarScreen> {
             const SizedBox(height: 20),
             if (_selectedDay != null)
               Text(
-                'You selected: ${_selectedDay!.toLocal().toString().split(' ')[0]}',
+                'Pookie Gyan you have selected: ${_selectedDay!.toLocal().toString().split(' ')[0]}',
                 style: const TextStyle(fontSize: 18),
               ),
-            Text(
-              'Pookie Gyan!! You can add events for this date: ${_selectedDay!.toLocal().toString().split(' ')[0]} here ig',
-              style: const TextStyle(fontSize: 22),
-            ),
           ],
         ),
       ),
