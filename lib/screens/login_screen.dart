@@ -6,7 +6,6 @@ import '../home_screen.dart';
 import 'signup_screen.dart';
 import 'profession_input_screen.dart';
 
-
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
@@ -49,64 +48,64 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
-void _navigateToHome() async {
-  print("🔑 Checking logged in user...");
-  final user = FirebaseAuth.instance.currentUser;
+  void _navigateToHome() async {
+    print("🔑 Checking logged in user...");
+    final user = FirebaseAuth.instance.currentUser;
 
-  if (user != null) {
-    try {
-      print("📡 Fetching Firestore doc...");
+    if (user != null) {
+      try {
+        print("📡 Fetching Firestore doc...");
 
-      final doc = await FirebaseFirestore.instance
-          .collection('users')
-          .doc(user.uid)
-          .get()
-          .timeout(const Duration(seconds: 5)); // <-- ADD TIMEOUT
+        final doc = await FirebaseFirestore.instance
+            .collection('users')
+            .doc(user.uid)
+            .get()
+            .timeout(const Duration(seconds: 5)); // <-- ADD TIMEOUT
 
-      if (!doc.exists) {
-        print("⚠️ Document does not exist, redirecting to profession input");
+        if (!doc.exists) {
+          print("⚠️ Document does not exist, redirecting to profession input");
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => ProfessionInputScreen()),
+          );
+          return;
+        }
+
+        final data = doc.data();
+        final profession = data?['profession'];
+        print("📌 Profession: $profession");
+
+        if (profession != null && profession.toString().isNotEmpty) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => const HomeScreen()),
+          );
+        } else {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => ProfessionInputScreen()),
+          );
+        }
+      } catch (e) {
+        print("❌ Error fetching Firestore doc: $e");
+
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => ProfessionInputScreen()),
         );
-        return;
       }
-
-      final data = doc.data();
-      final profession = data?['profession'];
-      print("📌 Profession: $profession");
-
-      if (profession != null && profession.toString().isNotEmpty) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const HomeScreen()),
-        );
-      } else {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => ProfessionInputScreen()),
-        );
-      }
-    } catch (e) {
-      print("❌ Error fetching Firestore doc: $e");
-
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => ProfessionInputScreen()),
-      );
     }
   }
-}
 
-void _showError(String message) {
-  ScaffoldMessenger.of(context).showSnackBar(
-    SnackBar(content: Text("Error: $message")),
-  );
-}
+  void _showError(String message) {
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text("Error: $message")));
+  }
 
-@override
-Widget build(BuildContext context) {
-  return Scaffold(
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
       appBar: AppBar(title: const Text('Login')),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -131,16 +130,16 @@ Widget build(BuildContext context) {
               onPressed: _signInWithGoogle,
               child: const Text('Login with Google'),
             ),
+            const SizedBox(height: 10),
             TextButton(
-  onPressed: () {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const SignUpScreen()),
-    );
-  },
-  child: const Text("Don't have an account? Sign up here"),
-),
-
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const SignUpScreen()),
+                );
+              },
+              child: const Text("Don't have an account? Sign up here"),
+            ),
           ],
         ),
       ),
