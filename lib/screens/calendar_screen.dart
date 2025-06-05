@@ -15,7 +15,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Calendar')),
+      appBar: AppBar(title: const Text('Agent X Calendar')),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -48,6 +48,10 @@ class _CalendarScreenState extends State<CalendarScreen> {
                 'You selected: ${_selectedDay!.toLocal().toString().split(' ')[0]}',
                 style: const TextStyle(fontSize: 18),
               ),
+            Text(
+              'Pookie Gyan!! You can add events for this date: ${_selectedDay!.toLocal().toString().split(' ')[0]} here ig',
+              style: const TextStyle(fontSize: 22),
+            ),
           ],
         ),
       ),
