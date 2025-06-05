@@ -21,7 +21,7 @@ class HomeScreen extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const ChatScreen()),
+                  MaterialPageRoute(builder: (context) => const ChatScreen(profession: 'YourProfession')),
                 );
               },
               child: const Text("Open Chatbot"),

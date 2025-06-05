@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import '../home_screen.dart';
+import 'signup_screen.dart';
+import 'profession_input_screen.dart';
+
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -45,22 +49,64 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
-  void _navigateToHome() {
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (context) => const HomeScreen()),
-    );
-  }
+void _navigateToHome() async {
+  print("🔑 Checking logged in user...");
+  final user = FirebaseAuth.instance.currentUser;
 
-  void _showError(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text("Error: $message")),
-    );
-  }
+  if (user != null) {
+    try {
+      print("📡 Fetching Firestore doc...");
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
+      final doc = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid)
+          .get()
+          .timeout(const Duration(seconds: 5)); // <-- ADD TIMEOUT
+
+      if (!doc.exists) {
+        print("⚠️ Document does not exist, redirecting to profession input");
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => ProfessionInputScreen()),
+        );
+        return;
+      }
+
+      final data = doc.data();
+      final profession = data?['profession'];
+      print("📌 Profession: $profession");
+
+      if (profession != null && profession.toString().isNotEmpty) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const HomeScreen()),
+        );
+      } else {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => ProfessionInputScreen()),
+        );
+      }
+    } catch (e) {
+      print("❌ Error fetching Firestore doc: $e");
+
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => ProfessionInputScreen()),
+      );
+    }
+  }
+}
+
+void _showError(String message) {
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(content: Text("Error: $message")),
+  );
+}
+
+@override
+Widget build(BuildContext context) {
+  return Scaffold(
       appBar: AppBar(title: const Text('Login')),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -85,6 +131,16 @@ class _LoginScreenState extends State<LoginScreen> {
               onPressed: _signInWithGoogle,
               child: const Text('Login with Google'),
             ),
+            TextButton(
+  onPressed: () {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const SignUpScreen()),
+    );
+  },
+  child: const Text("Don't have an account? Sign up here"),
+),
+
           ],
         ),
       ),

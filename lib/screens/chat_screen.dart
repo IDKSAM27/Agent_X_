@@ -3,11 +3,14 @@ import '../services/chat_service.dart';
 import '../widgets/chat_bubble.dart';
 
 class ChatScreen extends StatefulWidget {
-  const ChatScreen({super.key});
+  final String profession;
+
+  const ChatScreen({super.key, required this.profession});
 
   @override
   State<ChatScreen> createState() => _ChatScreenState();
 }
+
 
 class _ChatScreenState extends State<ChatScreen> {
   final TextEditingController _controller = TextEditingController();

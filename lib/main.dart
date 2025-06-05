@@ -14,8 +14,8 @@ void main() async {
 
   // Initialize Firebase
   await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  options: DefaultFirebaseOptions.currentPlatform,);
+
 
   runApp(const MyApp());
 }
@@ -49,5 +49,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
-
