@@ -125,12 +125,12 @@ class _LoginScreenState extends State<LoginScreen> {
               onPressed: _signInWithEmail,
               child: const Text('Login with Email'),
             ),
-            const SizedBox(height: 10),
+            const SizedBox(height: 7),
             ElevatedButton(
               onPressed: _signInWithGoogle,
               child: const Text('Login with Google'),
             ),
-            const SizedBox(height: 10),
+            const SizedBox(height: 5),
             TextButton(
               onPressed: () {
                 Navigator.push(

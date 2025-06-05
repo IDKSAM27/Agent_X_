@@ -40,7 +40,7 @@ class _ClockScreenState extends State<ClockScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Clock')),
+      appBar: AppBar(title: const Text('Agent X Clock')),
       body: Center(
         child: Text(
           _currentTime,

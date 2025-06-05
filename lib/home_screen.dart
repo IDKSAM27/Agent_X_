@@ -40,13 +40,13 @@ class HomeScreen extends StatelessWidget {
           ),
 
           // Bottom buttons (Clock and Calendar)
+          // padding: const EdgeInsets.fromLTRB(16, 0, 16, 30), -> Pookie Gyan this will add padding to left and right too, if needed
           Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 16.0,
-              vertical: 24.0,
-            ),
+            padding: const EdgeInsets.only(
+              bottom: 30.0,
+            ), // <-- Adjust value as needed
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 ElevatedButton(
                   onPressed: () {
@@ -57,13 +57,24 @@ class HomeScreen extends StatelessWidget {
                       ),
                     );
                   },
-                  child: const Text("Clock"),
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: const Size(140, 60),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                  child: const Text("Clock", style: TextStyle(fontSize: 18)),
                 ),
+
                 ElevatedButton(
-                  onPressed: () {
-                    // Add calendar navigation here
-                  },
-                  child: const Text("Calendar"),
+                  onPressed: () {},
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: const Size(140, 60),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                  child: const Text("Calendar", style: TextStyle(fontSize: 18)),
                 ),
               ],
             ),
