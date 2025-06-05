@@ -30,13 +30,12 @@ class _HomeScreenState extends State<HomeScreen> {
     try {
       final doc = await FirebaseFirestore.instance.collection('users').doc(uid).get();
       profession = doc['profession'] ?? 'General';
-
-      // Capitalize first letter for better matching
-      profession = profession!.substring(0, 1).toUpperCase() + profession!.substring(1).toLowerCase();
+      print('Profession: $profession'); // Debug
 
       newsArticles = await NewsService.fetchNewsForProfession(profession!);
+      print('News count: ${newsArticles.length}'); // Debug
     } catch (e) {
-      debugPrint("Error fetching profession or news: $e");
+      debugPrint("Error: $e");
     }
 
     setState(() {
@@ -55,15 +54,6 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Welcome, $profession"),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.logout),
-            onPressed: () async {
-              await FirebaseAuth.instance.signOut();
-              // You can add redirection to LoginScreen here if needed
-            },
-          )
-        ],
       ),
       body: Column(
         children: [
@@ -106,7 +96,7 @@ class _HomeScreenState extends State<HomeScreen> {
               icon: const Icon(Icons.chat),
               label: const Text("Chat with Agent-X"),
             ),
-          )
+          ),
         ],
       ),
     );
