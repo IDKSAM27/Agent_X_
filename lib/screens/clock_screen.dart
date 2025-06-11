@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:intl/intl.dart';
 
+final List<String> _titles = ['Alarm', 'Clock', 'Timer'];
+
 class ClockScreen extends StatefulWidget {
   const ClockScreen({super.key});
 
@@ -26,6 +28,7 @@ class _ClockScreenState extends State<ClockScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(title: Text('Agent X ${_titles[_selectedIndex]}')),
       body: _pages[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
