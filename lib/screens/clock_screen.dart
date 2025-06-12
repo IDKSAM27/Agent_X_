@@ -33,6 +33,10 @@ class _ClockScreenState extends State<ClockScreen> {
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
         onTap: _onTabTapped,
+        type: BottomNavigationBarType.fixed, // or shifting for animation
+        selectedItemColor: Colors.purple, // Highlighted tab color
+        unselectedItemColor: Colors.grey, // Dimmed others
+        showUnselectedLabels: true, // Optional
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.alarm), label: 'Alarm'),
           BottomNavigationBarItem(
